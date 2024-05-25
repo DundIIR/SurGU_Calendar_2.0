@@ -2,12 +2,12 @@ from pathlib import Path
 import os
 import pymysql
 
+
 pymysql.version = (1, 4, 6, 'final', 0)
 pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -22,7 +22,6 @@ ALLOWED_HOSTS = []
 
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost']
 
-SITE_ID = 2
 
 # Application definition
 
@@ -35,31 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'main',
-    'oauth',
     'rest_framework',
-
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
 ]
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-
-            'https://www.googleapis.com/auth/calendar',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'offline',
-        }
-    }
-}
-
-SOCIALACCOUNT_STORE_TOKENS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,7 +45,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'SurGu_Calendar.urls'
@@ -150,18 +125,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'main.CustomUser'
-ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
-
-LOGIN_REDIRECT_URL = '/'
-
-LOGOUT_REDIRECT_URL = '/'
-
-# REST_AUTH_SERIALIZERS = {
-#     'USER_DETAILS_SERIALIZER': 'users.serializers.CustomUserSerializer',
-# }
 

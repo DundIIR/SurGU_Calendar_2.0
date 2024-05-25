@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from main.create_json import create_json
+from .create_json import create_json
 from .models import *
 
 
