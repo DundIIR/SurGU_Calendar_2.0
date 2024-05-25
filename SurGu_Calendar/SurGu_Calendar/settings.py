@@ -1,10 +1,6 @@
 from pathlib import Path
 import os
 import pymysql
-import environ
-
-env = environ.Env()
-environ.Env.read_env(env_file=Path('./docker/env/.env.dev'))
 
 pymysql.version = (1, 4, 6, 'final', 0)
 pymysql.install_as_MySQLdb()
@@ -17,14 +13,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = 'django-insecure-)bt^z@1h1q0^(q-#q_23qvn4!qv=$&5ytsl=!oy(*p+9x6vdy$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(env('DEBUG', default=1))
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CSRF_TRUSTED_ORIGINS = env('CSRF_TRUSTED_ORIGINS').split()
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost']
 
 SITE_ID = 2
 
@@ -103,11 +99,11 @@ WSGI_APPLICATION = 'SurGu_Calendar.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('POSTGRES_DB'),
-        'USER': env('POSTGRES_USER'),
-        'PASSWORD': env('POSTGRES_PASSWORD'),
-        'HOST': env('POSTGRES_HOST'),
-        'PORT': env('POSTGRES_PORT'),
+        'NAME': 'ais_ruzin7752_surgu_calendar',
+        'USER': 'ais_ruzin7752_surgu_calendar',
+        'PASSWORD': 'TaMHWmKDbSLMWUpObMvNbQ5C',
+        'HOST': '92.246.214.15',
+        'PORT': '3306',
     }
 }
 
