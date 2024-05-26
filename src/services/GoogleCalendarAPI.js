@@ -10,6 +10,7 @@ class GoogleCalendarAPI {
 
 	async createCalendar(summary) {
 		try {
+			console.log('календарь начал создаваться')
 			const response = await axios.post(
 				`${this.calendarBaseUrl}/calendars`,
 				{ summary, timeZone: this.timeZone },
@@ -18,7 +19,7 @@ class GoogleCalendarAPI {
 						Authorization: `Bearer ${this.providerToken}`,
 						'Content-Type': 'application/json',
 					},
-				},
+				}
 			)
 
 			// console.log(response.data)
@@ -31,12 +32,16 @@ class GoogleCalendarAPI {
 
 	async createEvent(calendarId, event) {
 		try {
-			const response = await axios.post(`${this.calendarBaseUrl}/calendars/${calendarId}/events`, event, {
-				headers: {
-					Authorization: `Bearer ${this.providerToken}`,
-					'Content-Type': 'application/json',
-				},
-			})
+			const response = await axios.post(
+				`${this.calendarBaseUrl}/calendars/${calendarId}/events`,
+				event,
+				{
+					headers: {
+						Authorization: `Bearer ${this.providerToken}`,
+						'Content-Type': 'application/json',
+					},
+				}
+			)
 
 			// console.log(response.data)
 			console.log('Событие создано')
@@ -49,8 +54,10 @@ class GoogleCalendarAPI {
 	async importSchedule(search) {
 		const surguCalendarAPI = new SurguCalendarAPI()
 		const schedule = await surguCalendarAPI.getSchedule(search)
+		console.log('запрос корректный')
 		try {
 			if (schedule && schedule.length > 0) {
+				console.log('расписание получено')
 				const calendar = await this.createCalendar(search)
 
 				if (calendar && calendar.id) {
@@ -61,7 +68,9 @@ class GoogleCalendarAPI {
 						const start = this.formatDateTime(lesson.datetime_start_lesson)
 						const end = this.formatDateTime(lesson.datetime_end_lesson)
 						const until = lesson.repetition
-						const interval = lesson.interval ? `;INTERVAL=${lesson.interval}` : ''
+						const interval = lesson.interval
+							? `;INTERVAL=${lesson.interval}`
+							: ''
 						if (lesson.summary != summary) {
 							summary = lesson.summary
 							colorId = colorId === 12 ? 0 : colorId + 1
@@ -94,8 +103,14 @@ class GoogleCalendarAPI {
 
 	formatDateTime(dateTime) {
 		return (
-			`${dateTime.substring(0, 4)}-${dateTime.substring(4, 6)}-${dateTime.substring(6, 8)}T` +
-			`${dateTime.substring(9, 11)}:${dateTime.substring(11, 13)}:${dateTime.substring(13, 15)}`
+			`${dateTime.substring(0, 4)}-${dateTime.substring(
+				4,
+				6
+			)}-${dateTime.substring(6, 8)}T` +
+			`${dateTime.substring(9, 11)}:${dateTime.substring(
+				11,
+				13
+			)}:${dateTime.substring(13, 15)}`
 		)
 	}
 }

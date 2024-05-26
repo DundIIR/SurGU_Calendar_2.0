@@ -30,9 +30,9 @@ const FormSearch = ({ updateSchedule }) => {
 		e.preventDefault()
 
 		let newSearch = fieldSearch.trim()
-		newSearch = newSearch.length > 24 ? newSearch.slice(0, 21) + '...' : newSearch
 		if (newSearch) {
-			const existingSearches = JSON.parse(localStorage.getItem('searches')) || []
+			const existingSearches =
+				JSON.parse(localStorage.getItem('searches')) || []
 			existingSearches.push(newSearch)
 			localStorage.setItem('searches', JSON.stringify(existingSearches))
 			setFieldSearch('')
@@ -62,24 +62,30 @@ const FormSearch = ({ updateSchedule }) => {
 	}
 
 	return (
-		<form className="form-search" onSubmit={e => handleSubmit(e)}>
-			<button className="form-search__btn" type="submit">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<form className='form-search' onSubmit={e => handleSubmit(e)}>
+			<button className='form-search__btn' type='submit'>
+				<svg
+					width='24'
+					height='24'
+					viewBox='0 0 24 24'
+					fill='none'
+					xmlns='http://www.w3.org/2000/svg'
+				>
 					<path
-						d="M13.7365 13.7687L20 20M15.4557 9.69841C15.4557 12.8456 12.8913 15.3968 9.72785 15.3968C6.56444 15.3968 4 12.8456 4 9.69841C4 6.55126 6.56444 4 9.72785 4C12.8913 4 15.4557 6.55126 15.4557 9.69841Z"
-						stroke="#484848"
-						strokeWidth="2"
-						strokeLinecap="round"
+						d='M13.7365 13.7687L20 20M15.4557 9.69841C15.4557 12.8456 12.8913 15.3968 9.72785 15.3968C6.56444 15.3968 4 12.8456 4 9.69841C4 6.55126 6.56444 4 9.72785 4C12.8913 4 15.4557 6.55126 15.4557 9.69841Z'
+						stroke='#484848'
+						strokeWidth='2'
+						strokeLinecap='round'
 					/>
 				</svg>
 
-				<span className="visually-hidden">Найти</span>
+				<span className='visually-hidden'>Найти</span>
 			</button>
 			<input
-				className="form-search__field"
-				type="text"
-				name="text"
-				placeholder="введите свою группу(подгруппу) или фамилию преподавателя"
+				className='form-search__field'
+				type='text'
+				name='text'
+				placeholder='введите свою группу(подгруппу) или фамилию преподавателя'
 				value={fieldSearch}
 				onChange={e => handleInputChange(e)}
 				required
