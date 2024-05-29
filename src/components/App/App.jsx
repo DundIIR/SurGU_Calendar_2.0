@@ -26,11 +26,23 @@ const App = () => {
 		<Routes>
 			<Route
 				path="/"
-				element={session ? <Navigate to="/home" /> : <DefaultPage updateSchedule={updateSchedule} searches={searches} />}
+				element={
+					session ? (
+						<Navigate to="/home" />
+					) : (
+						<DefaultPage updateSchedule={updateSchedule} searches={searches} setSearches={setSearches} />
+					)
+				}
 			/>
 			<Route
 				path="/home"
-				element={session ? <HomePage updateSchedule={updateSchedule} searches={searches} /> : <Navigate to="/" />}
+				element={
+					session ? (
+						<HomePage updateSchedule={updateSchedule} searches={searches} setSearches={setSearches} />
+					) : (
+						<Navigate to="/" />
+					)
+				}
 			/>
 		</Routes>
 	)

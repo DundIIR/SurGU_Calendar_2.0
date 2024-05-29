@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Container, Heading } from '@chakra-ui/react'
 
-const HomePage = ({ updateSchedule, searches }) => {
+const HomePage = ({ updateSchedule, searches, setSearches }) => {
 	const session = useSession()
 	const supabase = useSupabaseClient()
 
@@ -33,7 +33,7 @@ const HomePage = ({ updateSchedule, searches }) => {
 				<h1 className="visually-hidden">SurGU Календарь - новое расписание СурГУ</h1>
 				<Instruction />
 				<Slogan />
-				<FileSchedule searches={searches} />
+				<FileSchedule searches={searches} setSearches={setSearches} />
 			</main>
 			<Footer />
 		</div>

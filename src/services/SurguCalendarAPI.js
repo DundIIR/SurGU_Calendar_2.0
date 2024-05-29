@@ -1,4 +1,5 @@
 import axios from 'axios'
+import CustomError from './CustomError'
 
 class SurguCalendarAPI {
 	getSchedule = async search => {
@@ -10,44 +11,13 @@ class SurguCalendarAPI {
 			})
 
 			console.log(response.data)
+
 			return response.data
-			// return [
-			// 	{
-			// 		datetime_start_lesson: '20240304T083000',
-			// 		datetime_end_lesson: '20240304T095000',
-			// 		repetition: '20240601T235959Z',
-			// 		interval: '',
-			// 		create: '20240520',
-			// 		location: 'К406 Лекционное занятие',
-			// 		summary: 'WEB',
-			// 		description: 'Кузин Д.А.',
-			// 		subgroup: '609-11 None',
-			// 	},
-			// 	{
-			// 		datetime_start_lesson: '20240312T083000',
-			// 		datetime_end_lesson: '20240312T095000',
-			// 		repetition: '20240601T235959Z',
-			// 		interval: 2,
-			// 		create: '20240520',
-			// 		location: 'К401 Лабораторное занятие',
-			// 		summary: 'WEB',
-			// 		description: 'Кузин Д.А.',
-			// 		subgroup: '609-11 а',
-			// 	},
-			// 	{
-			// 		datetime_start_lesson: '20240306T083000',
-			// 		datetime_end_lesson: '20240306T095000',
-			// 		repetition: '20240601T235959Z',
-			// 		interval: 2,
-			// 		create: '20240520',
-			// 		location: 'К401 Лабораторное занятие',
-			// 		summary: 'Физика',
-			// 		description: 'Кузин Д.А.',
-			// 		subgroup: '609-11 а',
-			// 	},
-			// ]
-		} catch (e) {
-			console.log(e)
+		} catch (error) {
+			console.log(error)
+			if (response && response.data && response.data.length < 1)
+				throw new CustomError('Не получилось найти расписание;Попробуй изменить поисковый запрос или обратись в службу поддержки')
+			else throw new CustomError('Сервер спит;Попробуй обратится в службу поддержки или зайти позже')
 		}
 	}
 }

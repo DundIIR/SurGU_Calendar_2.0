@@ -6,7 +6,7 @@ import Instruction from '../components/Instruction/Instruction'
 import { useNavigate } from 'react-router-dom'
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react'
 
-const DefaultPage = ({ updateSchedule, searches }) => {
+const DefaultPage = ({ updateSchedule, searches, setSearches }) => {
 	const session = useSession()
 	const supabase = useSupabaseClient()
 	const { isLoading } = useSessionContext()
@@ -43,7 +43,7 @@ const DefaultPage = ({ updateSchedule, searches }) => {
 				<h1 className="visually-hidden">SurGU Календарь - новое расписание СурГУ</h1>
 				<Instruction />
 				<Slogan />
-				<FileSchedule searches={searches} />
+				<FileSchedule searches={searches} setSearches={setSearches} />
 			</main>
 			<Footer />
 		</div>
