@@ -1,22 +1,50 @@
+from django.db.models import Q
 from django.shortcuts import render
 from rest_framework import generics
 from .models import *
-from .serializers import LessonSerializer
+from .serializers import LessonSerializer, SubgroupSerializer, ProfessorSerializer
 
 
 def index(request):
     return render(request, 'index.html')
 
-
+# Контроллер для получения расписания с фильтрацией
 class LessonAPIList(generics.ListAPIView):
     serializer_class = LessonSerializer
 
     def get_queryset(self):
-        request_list = self.request.GET.get('search').split(' ')
-        if len(request_list) <= 3:
-            result = search_lessons(self, *request_list)
-            return result
+        search_query = self.request.GET.get('search', '')
+        if search_query:
+            request_list = search_query.split(' ')
+            if len(request_list) <= 3:
+                return search_lessons(self, *request_list)
+        return None
 
+# Контроллер для получения списка групп с фильтрацией
+class SubgroupListAPIView(generics.ListAPIView):
+    serializer_class = SubgroupSerializer  # Сериализатор для подгрупп
+
+    def get_queryset(self):
+        search_query = self.request.GET.get('search', '')
+        if search_query:
+            groups = Group.objects.filter(number_group__startswith=search_query)
+            return Subgroup.objects.filter(group__in=groups)
+        return Subgroup.objects.all()
+
+
+# Контроллер для получения списка преподавателей с фильтрацией
+class ProfessorListAPIView(generics.ListAPIView):
+    serializer_class = ProfessorSerializer
+
+    def get_queryset(self):
+        search_query = self.request.GET.get('search', '')  # Получаем параметр search
+        if search_query:
+            return Professor.objects.filter(
+                Q(last_name__startswith=search_query) |
+                Q(first_name__startswith=search_query) |
+                Q(patronymic__startswith=search_query)
+            )
+        return Professor.objects.all()
 
 def search_lessons(self, attr1, attr2=None, attr3=None):
     if attr3:
