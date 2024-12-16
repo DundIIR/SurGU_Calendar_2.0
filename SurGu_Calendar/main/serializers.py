@@ -34,3 +34,17 @@ class ProfessorSerializer(serializers.ModelSerializer):
         return {
             'full_name': f"{instance.last_name} {instance.first_name} {instance.patronymic}"
         }
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'is_active', 'is_professor', 'is_student']
+
+    def to_representation(self, instance):
+        return {
+            'message': 'Все хорошо, пользователь авторизован',
+            'email': instance.email,
+            'is_active': instance.is_active,
+            'is_professor': instance.is_professor,
+            'is_student': instance.is_student
+        }

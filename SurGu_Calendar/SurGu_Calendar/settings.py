@@ -1,7 +1,10 @@
-from pathlib import Path
 import os
+from pathlib import Path
+
 import pymysql
 
+from dotenv import load_dotenv
+load_dotenv()
 
 pymysql.version = (1, 4, 6, 'final', 0)
 pymysql.install_as_MySQLdb()
@@ -13,7 +16,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)bt^z@1h1q0^(q-#q_23qvn4!qv=$&5ytsl=!oy(*p+9x6vdy$'
+SECRET_KEY = os.getenv("SECRET_KEY")
+SUPABASE_JWT_SECRET = os.getenv("SUPABASE_JWT_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -74,10 +78,10 @@ WSGI_APPLICATION = 'SurGu_Calendar.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ais_ruzin7752_surgu_calendar',
-        'USER': 'ais_ruzin7752_surgu_calendar',
-        'PASSWORD': 'TaMHWmKDbSLMWUpObMvNbQ5C',
-        'HOST': '92.246.214.15',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
         'PORT': '3306',
     }
 }
@@ -101,6 +105,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'main.authentication.BearerAuthentication',
+    ],
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
