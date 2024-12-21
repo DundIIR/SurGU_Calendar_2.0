@@ -29,15 +29,6 @@ const DefaultPage = ({ updateSchedule, searches, setSearches }) => {
 
 	return (
 		<div className="page">
-			{session ? (
-				<>
-					<h2>Привет {session.user.email}</h2>
-					<button onClick={() => createEvent()}>Создать событие</button>
-					<button onClick={() => signOut()}>Выход</button>
-				</>
-			) : (
-				''
-			)}
 			<Header googleBtn={googleSignIn} updateSchedule={updateSchedule} />
 			<main className="page-main">
 				<h1 className="visually-hidden">SurGU Календарь - новое расписание СурГУ</h1>

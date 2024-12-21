@@ -20,6 +20,20 @@ class SurguCalendarAPI {
 			else throw new CustomError('Сервер спит;Попробуй обратится в службу поддержки или зайти позже')
 		}
 	}
+
+	validateToken = async token => {
+		try {
+			const response = await axios.get('/api/validate-token/', {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			return response.data
+		} catch (error) {
+			console.error(error)
+			throw new CustomError('Ошибка авторизации; Попробуйте снова войти в систему.')
+		}
+	}
 }
 
 export default SurguCalendarAPI
