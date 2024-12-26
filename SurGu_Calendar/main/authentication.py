@@ -4,6 +4,13 @@ from rest_framework.exceptions import AuthenticationFailed
 import jwt
 from django.conf import settings
 
+from rest_framework.permissions import BasePermission
+
+class IsAdminUserRole(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        # Проверяем, что пользователь авторизован и его роль - "Администратор"
+        return user.is_authenticated and user.role and user.role.name == "Администратор"
 
 class BearerAuthentication(BaseAuthentication):
     def authenticate(self, request):
@@ -25,19 +32,17 @@ class BearerAuthentication(BaseAuthentication):
                 algorithms=["HS256"],
                 options={"verify_aud": False}
             )
-            print(decoded_token)
+
             email = decoded_token.get("email")
             if not email:
                 raise AuthenticationFailed("Email не найден в токене")
             User = get_user_model()
             user = User.objects.filter(email=email).first()
             if not user:
-                user = User.objects.create(
+                user = User.objects.create_user(
                     email=email,
-                    password=decoded_token.get("sub"),
                     is_active=True,
                 )
-                user.save()
 
             return (user, None)
 

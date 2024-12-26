@@ -3,8 +3,7 @@ from .models import *
 
 
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'password', 'date_joined', 'last_login', 'is_superuser', 'is_staff', 'is_active',
-                    'is_professor', 'professor', 'is_student', 'student')
+    list_display = ('email', 'password', 'date_joined', 'last_login', 'professor', 'student', 'role')
     list_display_links = ('email',)
 
 

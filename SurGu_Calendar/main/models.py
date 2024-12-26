@@ -10,14 +10,21 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
+        role = extra_fields.get('role')
+        if not role:
+            role, created = Role.objects.get_or_create(name='Студент')
+        extra_fields.setdefault('role', role)
+
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
+
         extra_fields.setdefault('is_superuser', True)
+        admin_role, created = Role.objects.get_or_create(name='Администратор')
+        extra_fields.setdefault('role', admin_role)
         return self.create_user(email, password, **extra_fields)
 
 
@@ -31,14 +38,15 @@ class CustomUser(AbstractUser):
     password = models.CharField(max_length=128, verbose_name='Пароль')
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
     last_login = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Дата последнего входа')
-    is_superuser = models.BooleanField(default=False, verbose_name='Администратор')
-    is_staff = models.BooleanField(default=False, verbose_name='Сотрудник')
+    is_superuser = models.BooleanField(default=False, verbose_name='Суперпользователь')
     is_active = models.BooleanField(default=True, verbose_name='Активный')
-    is_professor = models.BooleanField(default=False, verbose_name='Преподаватель')
+    is_staff = None
+
     professor = models.ForeignKey('Professor', on_delete=models.SET_NULL, blank=True, null=True,
                                   verbose_name='Преподаватель')
-    is_student = models.BooleanField(default=False, verbose_name='Студент')
+
     student = models.ForeignKey('Student', on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Студент')
+    role = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, verbose_name='Роль', related_name='users')
 
     objects = CustomUserManager()
 
@@ -52,8 +60,18 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = '\"Пользователь\"'
         verbose_name_plural = '\"Пользователь\"'
-        ordering = ['is_active', 'is_superuser', 'is_staff', 'is_professor', 'is_student']
+        ordering = ['date_joined', 'last_login']
 
+
+class Role(models.Model):
+    name = models.CharField(max_length=50, unique=True, verbose_name="Название роли")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Роль"
+        verbose_name_plural = "Роли"
 
 # Студент
 class Student(models.Model):

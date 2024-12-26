@@ -3,13 +3,15 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.views import APIView
 
+from .authentication import IsAdminUserRole
 from .models import *
-from .serializers import LessonSerializer, SubgroupSerializer, ProfessorSerializer, CustomUserSerializer
-import jwt
+from .serializers import LessonSerializer, SubgroupSerializer, ProfessorSerializer, CustomUserSerializer, \
+    UserListSerializer
+
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed, ValidationError, NotFound
 from rest_framework.authentication import BaseAuthentication
 
 REST_FRAMEWORK = {
@@ -86,6 +88,37 @@ class ProtectedDataAPIView(APIView):
     def get(self, request):
         serializer = CustomUserSerializer(request.user)
         return Response({
-            'message': 'Все отлично',
             'user': serializer.data
         })
+
+
+class UserListAPIView(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserListSerializer
+    permission_classes = [IsAuthenticated, IsAdminUserRole]
+
+
+class UpdateUserRoleAPIView(APIView):
+    permission_classes = [IsAuthenticated, IsAdminUserRole]
+
+    def post(self, request):
+        email = request.data.get('email')
+        role_name = request.data.get('role')
+
+        if not email or not role_name:
+            raise ValidationError({'error': 'Поля email и role обязательны.'})
+
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            raise NotFound({'error': f'Пользователь с email {email} не найден.'})
+
+        try:
+            role = Role.objects.get(name=role_name)
+        except Role.DoesNotExist:
+            raise NotFound({'error': f'Роль с именем {role_name} не найдена.'})
+
+        user.role = role
+        user.save()
+
+        return Response({'message': f'Роль пользователя {email} успешно обновлена на {role_name}.'})
