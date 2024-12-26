@@ -8,11 +8,11 @@ import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth
 
 const DefaultPage = ({ updateSchedule, searches, setSearches }) => {
 	const session = useSession()
-	const supabase = useSupabaseClient()
 	const { isLoading } = useSessionContext()
 
 	let navigate = useNavigate()
 
+	const supabase = useSupabaseClient()
 	const googleSignIn = async () => {
 		try {
 			const { error } = await supabase.auth.signInWithOAuth({
