@@ -19,6 +19,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 SUPABASE_JWT_SECRET = os.getenv("SUPABASE_JWT_SECRET")
 
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_REGION = os.getenv('AWS_REGION')
+AWS_BUCKET = os.getenv('AWS_BUCKET')
+AWS_END_POINT = os.getenv('AWS_END_POINT')
+AWS_USE_PATH_STYLE_ENDPOINT = os.getenv('AWS_USE_PATH_STYLE_ENDPOINT')
+
+
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

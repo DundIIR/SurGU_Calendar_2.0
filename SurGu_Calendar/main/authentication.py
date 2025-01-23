@@ -9,14 +9,13 @@ from rest_framework.permissions import BasePermission
 class IsAdminUserRole(BasePermission):
     def has_permission(self, request, view):
         user = request.user
-        # Проверяем, что пользователь авторизован и его роль - "Администратор"
         return user.is_authenticated and user.role and user.role.name == "Администратор"
 
 class BearerAuthentication(BaseAuthentication):
     def authenticate(self, request):
         auth_header = request.headers.get("Authorization")
         if not auth_header:
-            raise AuthenticationFailed("Токен не предоставлен")
+            raise AuthenticationFailed("Токен нн предоставлен")
         parts = auth_header.split()
         if parts[0].lower() != "bearer":
             raise AuthenticationFailed("Неверный формат токена")

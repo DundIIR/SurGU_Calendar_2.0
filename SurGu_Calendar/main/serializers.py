@@ -60,3 +60,17 @@ class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'email', 'role']
+
+
+class FileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FileSchedule
+        fields = ['id', 'file_name', 'file_url']
+
+    def to_representation(self, instance):
+        return {
+            'id': instance.id,
+            'name': instance.file_name,
+            'url': instance.file_url
+        }

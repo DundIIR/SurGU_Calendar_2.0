@@ -3,6 +3,8 @@ from .views import *
 
 
 urlpatterns = [
+    path('api/upload-files/', FileUploadAPIView.as_view(), name='file-upload'),
+    path('api/files/', FileListAPIView.as_view(), name='file-list'),
     path('api/update-role/', UpdateUserRoleAPIView.as_view(), name='update-role'),
     path('api/users/', UserListAPIView.as_view(), name='user-list'),
     path('api/validate-token/', ProtectedDataAPIView.as_view(), name='validate_token'),

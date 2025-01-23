@@ -40,7 +40,7 @@ class CustomUser(AbstractUser):
     last_login = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Дата последнего входа')
     is_superuser = models.BooleanField(default=False, verbose_name='Суперпользователь')
     is_active = models.BooleanField(default=True, verbose_name='Активный')
-    is_staff = None
+    is_staff = models.BooleanField(default=True, verbose_name='Стафф')
 
     professor = models.ForeignKey('Professor', on_delete=models.SET_NULL, blank=True, null=True,
                                   verbose_name='Преподаватель')
@@ -187,6 +187,26 @@ class File(models.Model):
         verbose_name = '\"Файл\"'
         verbose_name_plural = '\"Файл\"'
         ordering = ['id']
+
+
+class FileSchedule(models.Model):
+    file_name = models.CharField(max_length=255, blank=True, null=True, verbose_name="Название файла")
+    file_url = models.URLField(null=True, verbose_name="Ссылка на файл")
+
+    # def save(self, *args, **kwargs):
+    #     if self.file_path:
+    #         self.file_name = self.file_path.name.split('/')[-1]
+    #         self.file_url = self.file_path.url
+    #     super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.file_url}"
+
+    class Meta:
+        verbose_name = 'Файл'
+        verbose_name_plural = 'Файлы'
+        ordering = ['id']
+
 
 
 # Отношение с отделом
