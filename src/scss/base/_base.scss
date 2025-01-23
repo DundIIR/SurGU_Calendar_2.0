@@ -55,7 +55,24 @@ body {
 }
 
 .page-admin {
+	display: block;
 	padding: 50px;
+	height: 650px;
+}
+
+.admin-tabs {
+	display: grid !important;
+	column-gap: 50px;
+	row-gap: 10px;
+	grid-template-columns: 1fr 660px;
+
+	height: 100%;
+}
+
+.admin-tabs__left {
+	grid-column: 1 / 2;
+	grid-row: 2 / 3;
+	background-color: red;
 }
 
 .page-main__instruction {

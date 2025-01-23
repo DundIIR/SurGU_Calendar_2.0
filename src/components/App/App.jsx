@@ -40,9 +40,9 @@ const App = () => {
 		validateUserRole()
 	}, [session])
 
-	if (isLoading || isRoleLoading || role === null) {
-		return ''
-	}
+	// if (isLoading || isRoleLoading || role === null) {
+	// 	return 'Загрузка'
+	// }
 
 	return (
 		<Routes>

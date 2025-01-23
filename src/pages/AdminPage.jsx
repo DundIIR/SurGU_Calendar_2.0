@@ -3,8 +3,11 @@ import Footer from '../components/Footer/Footer'
 import FileSchedule from '../components/FileSchedule/FileSchedule'
 import Slogan from '../components/Slogan/Slogan'
 import Instruction from '../components/Instruction/Instruction'
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Container, Heading } from '@chakra-ui/react'
-import FormAdmin from '../components/FormAdmin/FormAdmin'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Container, Heading, flexbox, Flex } from '@chakra-ui/react'
+import PDFUploader from '../components/PDFUploader/PDFUploader'
+
+import FormRole from '../components/FormRole/FormRole'
+import PDFList from '../components/PDFList/PDFList'
 
 const AdminPage = () => {
 	return (
@@ -17,8 +20,16 @@ const AdminPage = () => {
 			</Container>
 			<main className="page-main page-admin">
 				<h1 className="visually-hidden">SurGU Календарь - новое расписание СурГУ</h1>
-				<Tabs isFitted variant="enclosed" colorScheme="blue" defaultIndex={3}>
-					<TabList mb="1em">
+				<Tabs
+					display="grid"
+					gridTemplateRows="60px 1fr"
+					rowGap="10px"
+					height="100%"
+					isFitted
+					variant="enclosed"
+					colorScheme="blue"
+					defaultIndex={3}>
+					<TabList mb="1em" width="900px">
 						<Tab>Настройка расписания</Tab>
 						<Tab>Добавление расписаний</Tab>
 						<Tab>Добавление переносов</Tab>
@@ -28,14 +39,15 @@ const AdminPage = () => {
 						<TabPanel>
 							<p>Настройка расписания</p>
 						</TabPanel>
-						<TabPanel>
-							<p>Добавление расписаний</p>
+						<TabPanel display="flex" gap="40px">
+							<PDFUploader />
+							<PDFList />
 						</TabPanel>
 						<TabPanel>
 							<p>Добавление переносов</p>
 						</TabPanel>
 						<TabPanel>
-							<FormAdmin />
+							<FormRole />
 						</TabPanel>
 					</TabPanels>
 				</Tabs>

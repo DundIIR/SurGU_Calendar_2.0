@@ -43,6 +43,20 @@ class SurguCalendarAPI {
 		}
 	}
 
+	getFilesList = async token => {
+		try {
+			const response = await axios.get('/api/files/', {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			return response.data
+		} catch (error) {
+			console.error(error)
+			throw new CustomError('Ошибка доступа; Недостаточно прав.')
+		}
+	}
+
 	validateToken = async token => {
 		try {
 			const response = await axios.get('/api/validate-token/', {

@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const backend = 'http://localhost:8000'
+const backendUrlDev = 'http://localhost:8000'
+const backendUrlProd = 'http://server:8000'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -10,7 +11,7 @@ export default defineConfig(({ mode }) => ({
 		host: '0.0.0.0',
 		proxy: {
 			'^/api': {
-				target: mode == 'development' ? backend : 'http://server:8000',
+				target: mode == 'development' ? backendUrlDev : backendUrlProd,
 				ws: false,
 				secure: false,
 			},
