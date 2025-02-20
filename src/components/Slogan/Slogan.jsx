@@ -1,21 +1,20 @@
+import SearchForm from '../SearchForm/SearchForm'
 import './_slogan.scss'
 
 const Slogan = () => {
 	return (
-		<section className="page-main__slogan slogan">
-			<h2 className="visually-hidden">Слоган СурГУ календаря</h2>
-			<p className="slogan__h1">
-				ПОПРОБУЙ
+		<section className="slogan">
+			<p className="slogan__badge">
+				полностью бесплатно,
 				<br />
-				НОВОЕ
+				добавь за 3 минуты
 			</p>
-			<p className="slogan__h2">
-				расписание <span className="slogan__h2--color-first">Сур</span>
-				<span className="slogan__h2--color-second">ГУ</span>
-				<br />
-				вместе с <span className="slogan__h2--text-en slogan__h2--color-first">Google</span>
-				<span className="slogan__h2--text-en slogan__h2--color-second">Calendar</span>
-			</p>
+			<h1 className="slogan__title">
+				Попробуй новое расписание<span className="slogan__highlight slogan__highlight--blue"> СурГУ</span> с
+				<span className="slogan__highlight slogan__highlight--green"> GoogleCalendar</span>
+			</h1>
+			<p className="slogan__subtitle">вводи свою группу с подгруппой или фамилию преподавателя</p>
+			<SearchForm></SearchForm>
 		</section>
 	)
 }

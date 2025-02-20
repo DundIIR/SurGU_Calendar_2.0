@@ -2,6 +2,23 @@ import axios from 'axios'
 import CustomError from './CustomError'
 
 class SurguCalendarAPI {
+	getSchedule = async search => {
+		try {
+			const response = await axios.get('/api/schedule/', {
+				params: { search },
+			})
+
+			if (!response.data || response.data.length === 0) {
+				throw new CustomError('Расписание не найдено; Попробуй изменить запрос или обратись в поддержку.')
+			}
+
+			return response.data // Ожидаем, что бэкенд вернёт { group: "609-11", subgroups: ["A", "B"] }
+		} catch (error) {
+			console.error(error)
+			throw new CustomError('Ошибка запроса; Попробуйте снова или обратитесь в поддержку.')
+		}
+	}
+
 	updateUserRole = async (token, email, role) => {
 		try {
 			const response = await axios.post(
@@ -72,6 +89,7 @@ class SurguCalendarAPI {
 	}
 
 	getSchedule = async search => {
+		console.log(search)
 		try {
 			let response = await axios.get('/api', {
 				params: {

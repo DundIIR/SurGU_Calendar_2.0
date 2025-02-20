@@ -44,6 +44,7 @@ const PDFUploader = () => {
 
 		const formData = new FormData()
 		files.forEach(file => formData.append('files', file))
+		formData.append('pages', '6-9')
 
 		try {
 			toast({
@@ -54,6 +55,7 @@ const PDFUploader = () => {
 				isClosable: true,
 			})
 
+			console.log(formData)
 			const response = await axios.post('/api/upload-files/', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
@@ -61,7 +63,7 @@ const PDFUploader = () => {
 				},
 			})
 
-			const data = response.data
+			// const data = response.data
 			if (response.status == 200) {
 				toast({
 					title: 'Успех!',

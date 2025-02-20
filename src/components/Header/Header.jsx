@@ -1,18 +1,15 @@
 import './_header.scss'
-import logo from '../../img/Logo_SurGU_Calendar.svg'
-import FormSearch from '../FormSearch/FormSearch'
-import UserList from '../UserList/UserList'
+import logo from '../../img/logo-surgu-calendar.svg'
 
-const Header = ({ googleBtn, updateSchedule }) => {
+const Header = () => {
 	return (
 		<header className="header">
-			<div className="header__wrapper">
-				<a className="header__logo" href="#">
-					<img src={logo} alt="СурГУ Календарь" width="242" height="58" />
-				</a>
-				<FormSearch updateSchedule={updateSchedule} />
-				<UserList googleBtn={googleBtn} />
-			</div>
+			<a className="header__logo">
+				<img src={logo} alt="СурГУ Календарь" width="148" heihgt="30" />
+			</a>
+			<button className="menu-btn">
+				<span className="menu-btn__icon"></span>
+			</button>
 		</header>
 	)
 }
