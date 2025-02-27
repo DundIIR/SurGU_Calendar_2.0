@@ -1,6 +1,7 @@
 @import '../../scss/base/vars';
 
 .search-form {
+	position: relative;
 	padding: 20px;
 	background-color: $white;
 
@@ -38,5 +39,59 @@
 		background-size: contain;
 		background-position: center;
 		background-repeat: no-repeat;
+	}
+}
+
+.search-results-container {
+	position: absolute;
+	top: 65px;
+	left: 30px;
+	right: 30px;
+	background-color: #fff;
+	box-shadow: 0 4px 10px 1px rgba(0, 0, 0, 0.1);
+	max-height: 200px;
+	overflow-y: auto;
+	border-radius: 8px;
+
+	&::-webkit-scrollbar {
+		width: 3px; /* Ширина всего элемента навигации */
+		transform: translateX(-4px); /* Сдвигаем прокрутку влево */
+		margin-right: -10px;
+	}
+
+	&::-webkit-scrollbar-track {
+		margin: 20px 0;
+		background: $placeholder-light; /* Цвет дорожки */
+		border-radius: 10px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: $text-light; /* Цвет бегунка */
+		border-radius: 20px; /* Округление бегунка */
+	}
+}
+
+.search-results {
+	display: flex;
+	flex-direction: column;
+}
+
+.search-results__item {
+	padding: 10px 15px;
+	text-align: start;
+	cursor: pointer;
+
+	-webkit-tap-highlight-color: transparent;
+
+	@media (hover: hover) {
+		&:hover {
+			background-color: rgba($color: $placeholder, $alpha: 0.04);
+		}
+	}
+
+	@media (hover: none) {
+		&:active {
+			background-color: rgba($color: $placeholder, $alpha: 0.04);
+		}
 	}
 }

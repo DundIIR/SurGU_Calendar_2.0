@@ -1,15 +1,44 @@
 import './_search-form.scss'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useToast } from '@chakra-ui/react'
+import { setGroups, setProfessors } from '../../store/reducer.js'
 import { setQuery } from '../../store/searchSlice'
 import BottomSheet from './ButtomSheet/BottomSheet'
+import SurguCalendarAPI from '../../services/SurguCalendarAPI.js'
 
 const SearchForm = () => {
 	const [fieldSearch, setFieldSearch] = useState('')
 	const [isOpen, setIsOpen] = useState(false)
 	const [searchQuery, setSearchQuery] = useState('')
+	const [showSuggestions, setShowSuggestions] = useState(false) // видимость подсказки
 	const dispatch = useDispatch()
+	const api = new SurguCalendarAPI()
+	const toast = useToast()
+
+	// useEffect для получения данных при монтировании компонента
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const groups = await api.getGroups()
+				dispatch(setGroups(groups))
+
+				const professors = await api.getProfessors()
+				dispatch(setProfessors(professors))
+			} catch (error) {
+				toast({
+					title: 'Ошибка при загрузке данных',
+					description: error.message || 'Не удалось загрузить данные. Попробуйте обновить страницу.',
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+				})
+			}
+		}
+
+		// Вызов функции получения данных
+		fetchData()
+	}, [])
 
 	const handleInputChange = e => {
 		let value = e.target.value
@@ -35,17 +64,41 @@ const SearchForm = () => {
 		}
 
 		setFieldSearch(value)
+		setShowSuggestions(true)
 	}
+
+	// Данные из Redux
+	const groups = useSelector(state => state.api.groups)
+	const professors = useSelector(state => state.api.professors)
+
+	// Фильтрация групп и преподавателей
+	const filteredGroups = groups.filter(group => group.toLowerCase().includes(fieldSearch.toLowerCase()))
+	const filteredProfessors = professors.filter(prof => prof.toLowerCase().includes(fieldSearch.toLowerCase()))
+
+	const handleSelectItem = item => {
+		setFieldSearch(item) // Устанавливаем выбранное значение в input
+		setSearchQuery(item) // Сохраняем в результат поиска
+		setIsOpen(true) // Открываем BottomSheet
+		setShowSuggestions(false) // Скрываем подсказки
+		setFieldSearch('')
+	}
+
+	// Компонент для отображения результатов поиска
+	const SearchResults = ({ items }) => (
+		<div className="search-results">
+			{items.slice(0, 10).map((item, index) => (
+				<button key={index} className="search-results__item" onClick={() => handleSelectItem(item)}>
+					{item}
+				</button>
+			))}
+		</div>
+	)
 
 	const handleSubmit = e => {
 		e.preventDefault()
-		if (!fieldSearch.trim()) return
-
-		dispatch(setQuery(fieldSearch))
-		setSearchQuery(fieldSearch)
-		setIsOpen(true)
-
-		setFieldSearch('')
+		if (fieldSearch.trim()) {
+			handleSelectItem(fieldSearch) // Если ничего не выбрано, то использовать текущее значение
+		}
 	}
 
 	return (
@@ -59,7 +112,15 @@ const SearchForm = () => {
 					required
 					className="search-form__input"
 					placeholder="xxx-хх..."
+					onFocus={() => setShowSuggestions(true)} // Показываем подсказку при фокусе
+					onBlur={() => setTimeout(() => setShowSuggestions(false), 10)}
 				/>
+				{showSuggestions && fieldSearch && (
+					<div className="search-results-container">
+						<SearchResults items={filteredGroups} />
+						<SearchResults items={filteredProfessors} />
+					</div>
+				)}
 			</form>
 
 			<BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)} searchQuery={searchQuery}></BottomSheet>

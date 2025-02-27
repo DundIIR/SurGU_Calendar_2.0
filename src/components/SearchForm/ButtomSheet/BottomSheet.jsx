@@ -9,12 +9,15 @@ import {
 	RadioGroup,
 	IconButton,
 	Spinner,
+	Toast,
+	useToast,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import closeIcon from '../../../img/close.svg'
 import errorIcon from '../../../img/error.svg'
 import './_bottom-sheet.scss'
 import { useSelector } from 'react-redux'
+import SurguCalendarAPI from '../../../services/SurguCalendarAPI'
 
 const normalizeSearchQuery = query => {
 	const match = query.match(/^([0-9\-]+)([а-я])?$/i)
@@ -32,55 +35,54 @@ const BottomSheet = ({ isOpen, onClose, searchQuery }) => {
 
 	const [notFound, setNotFound] = useState(false)
 	const [loading, setLoading] = useState(false)
+	const toast = useToast()
 
 	useEffect(() => {
 		if (!isOpen) {
-			setSelectedValue('fullGroup')
+			setSelectedValue('0')
 			setIsChecked(true)
-			setOptions([{ value: 'fullGroup', label: 'Вся группа' }])
+			setOptions([{ value: '0', label: 'Всё расписание' }])
 			setNotFound(false)
 		}
-
-		if (searchQuery) {
+		if (isOpen && searchQuery) {
 			setLoading(true)
+			const api = new SurguCalendarAPI()
+			const query = normalizeSearchQuery(searchQuery)
+			if (query.subgroup) setSelectedValue(query.subgroup)
+			api
+				.getSearchCheck(query.group)
+				.then(data => {
+					if (data && data.length > 0) {
+						// Преобразуем данные в нужную структуру
+						const formattedOptions = data.map((item, index) => {
+							if (item === '0') {
+								return { value: '0', label: 'Всё группа' }
+							} else {
+								return {
+									value: item,
+									label: `Подгруппа ${item.toUpperCase()}`, // Преобразуем в "Подгруппа A", "Подгруппа Б" и т.д.
+								}
+							}
+						})
 
-			setTimeout(() => {
-				// Пример имитации ответа от сервера
-				const data = {
-					subgroups:
-						searchQuery.toLowerCase() === '609-11'
-							? [
-									{ value: 'subgroupA', label: 'Подгруппа А' },
-									{ value: 'subgroupB', label: 'Подгруппа Б' },
-							  ]
-							: [],
-				}
-
-				setLoading(false)
-				if (data.subgroups && data.subgroups.length > 0) {
-					// Если подгруппы найдены, добавляем их в список
-					setOptions([{ value: 'fullGroup', label: 'Вся группа' }, ...data.subgroups])
-					setNotFound(false)
-				} else {
-					// Если ничего не найдено
+						setOptions(formattedOptions)
+						setLoading(false)
+						setNotFound(false)
+					} else {
+						setNotFound(true)
+					}
+				})
+				.catch(error => {
+					setLoading(false)
 					setNotFound(true)
-				}
-			}, 1000)
-			// fetch(`/api/search?query=${searchQuery}`)
-			// 	.then(res => res.json())
-			// 	.then(data => {
-			// 		setLoading(false)
-			// 		if (data.subgroups && data.subgroups.length > 0) {
-			// 			setOptions([{ value: 'fullGroup', label: 'Вся группа' }, ...data.subgroups])
-			// 			setNotFound(false)
-			// 		} else {
-			// 			setNotFound(true)
-			// 		}
-			// 	})
-			// 	.catch(() => {
-			// 		setLoading(false)
-			// 		setNotFound(true)
-			// 	})
+					toast({
+						title: 'Ошибка',
+						description: error.message || 'Не удалось загрузить данные. Попробуйте обновить страницу.',
+						status: 'error',
+						duration: 5000,
+						isClosable: true,
+					})
+				})
 		}
 	}, [isOpen])
 

@@ -2,6 +2,54 @@ import axios from 'axios'
 import CustomError from './CustomError'
 
 class SurguCalendarAPI {
+	// Функция для получения списка групп
+	getGroups = async () => {
+		try {
+			const response = await axios.get('/api/groups-list/')
+
+			if (!response.data || response.data.length === 0) {
+				throw new CustomError('Группы не найдены; Попробуй обратиться в службу поддержки.')
+			}
+
+			return response.data
+		} catch (error) {
+			console.error(error)
+			throw new CustomError('Ошибка запроса; Не удалось получить список групп.')
+		}
+	}
+
+	// Функция для получения списка преподавателей
+	getProfessors = async () => {
+		try {
+			const response = await axios.get('/api/professors-list/')
+
+			if (!response.data || response.data.length === 0) {
+				throw new CustomError('Преподаватели не найдены; Попробуй обратиться в службу поддержки.')
+			}
+
+			return response.data
+		} catch (error) {
+			console.error(error)
+			throw new CustomError('Ошибка запроса; Не удалось получить список преподавателей.')
+		}
+	}
+
+	// Функция для получения подгрупп или преподавателей на основе поискового запроса
+	getSearchCheck = async query => {
+		try {
+			const response = await axios.get(`/api/check?search=${query}`)
+
+			if (!response.data || response.data.message) {
+				const errorMessage = response.data && response.data.message ? response.data.message : 'Ничего не найдено по запросу.'
+				throw new CustomError(`Ошибка; ${errorMessage}`)
+			}
+
+			return response.data
+		} catch (error) {
+			throw new CustomError('Ошибка запроса; Не удалось найти данные.')
+		}
+	}
+
 	getSchedule = async search => {
 		try {
 			const response = await axios.get('/api/schedule/', {
