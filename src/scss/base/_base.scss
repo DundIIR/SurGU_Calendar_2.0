@@ -38,11 +38,12 @@ body {
 	color: $white;
 	text-align: center;
 	border-radius: 12px;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .container {
 	width: 100%;
-	max-width: 380px !important;
+	max-width: 100% !important;
 	margin: 0 auto;
 
 	@include mediaTablet {

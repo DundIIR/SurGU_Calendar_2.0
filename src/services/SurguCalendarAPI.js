@@ -2,7 +2,7 @@ import axios from 'axios'
 import CustomError from './CustomError'
 
 class SurguCalendarAPI {
-	// Функция для получения списка групп
+	// Метод для получения списка групп
 	getGroups = async () => {
 		try {
 			const response = await axios.get('/api/groups-list/')
@@ -18,7 +18,7 @@ class SurguCalendarAPI {
 		}
 	}
 
-	// Функция для получения списка преподавателей
+	// Метод для получения списка преподавателей
 	getProfessors = async () => {
 		try {
 			const response = await axios.get('/api/professors-list/')
@@ -34,7 +34,8 @@ class SurguCalendarAPI {
 		}
 	}
 
-	// Функция для получения подгрупп или преподавателей на основе поискового запроса
+	// НЕ ИСПОЛЬЗУЕТСЯ
+	// Метод для проверки существования группы или преподавателя
 	getSearchCheck = async query => {
 		try {
 			const response = await axios.get(`/api/check?search=${query}`)
@@ -47,6 +48,23 @@ class SurguCalendarAPI {
 			return response.data
 		} catch (error) {
 			throw new CustomError('Ошибка запроса; Не удалось найти данные.')
+		}
+	}
+
+	getScheduleFile = async (search, subgroup = null, professor = false) => {
+		try {
+			const response = await axios.get('/api/file-schedule/', {
+				params: { search, subgroup, professors: professor.toString() },
+			})
+
+			if (!response.data || !response.data.file_url) {
+				throw new CustomError('Файл не найден; Попробуй изменить запрос или обратись в поддержку.')
+			}
+
+			return response.data.file_url
+		} catch (error) {
+			console.error(error)
+			throw new CustomError('Ошибка запроса; Попробуйте снова или обратитесь в поддержку.')
 		}
 	}
 

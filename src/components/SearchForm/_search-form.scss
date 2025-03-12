@@ -5,7 +5,7 @@
 	padding: 20px;
 	background-color: $white;
 
-	width: calc(100% - 100% / 19);
+	width: calc(100% - 100% / 15);
 	height: 60px;
 
 	display: flex;
@@ -16,15 +16,19 @@
 
 	box-shadow: 0 4px 10px 1px rgba(100, 100, 100, 0.09);
 
+	.label__input {
+		display: flex;
+		padding: 15px 0;
+		flex-grow: 1;
+	}
+
 	&__input {
 		font-size: 20px;
 		height: 20px;
 		color: $text;
-
-		flex-grow: 1;
+		width: 100%;
 		padding: 0 4px;
 		margin-right: 10px;
-
 		border-bottom: 0.5px solid $placeholder-light;
 
 		&::placeholder {

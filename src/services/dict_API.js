@@ -2078,3 +2078,24 @@ const der3 = {
 		},
 	},
 }
+
+function createPromise(success) {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			if (success) resolve('Успех!')
+			else reject('Ошибка!')
+		}, 1000)
+	})
+}
+
+const temp = () => {
+	fetch('https://jsonplaceholder.typicode.com/todos/1')
+		.then(response => response.json()) // Парсим JSON
+		.then(data => console.log(data)) // Работаем с данными
+		.catch(error => console.error('Ошибка:', error))
+
+	// Использование:
+	createPromise(true)
+		.then(result => console.log(result))
+		.catch(error => console.error(error))
+}

@@ -2,18 +2,19 @@
 
 .slogan {
 	position: relative;
-	padding: 30px 10px;
+	padding: 50px 10px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	gap: 20px;
 
 	&::after {
 		content: '';
 		position: absolute;
 		right: 0;
-		top: 0;
+		top: -70px;
 		width: 250px;
-		height: 100%;
+		height: calc(100% + 80px);
 		background-image: url('../../img/bg-linie-punktierte.svg');
 		background-repeat: no-repeat;
 		background-position: center;
@@ -74,6 +75,7 @@
 		color: $text-light;
 		text-align: center;
 		width: 270px;
+		margin-top: -20px;
 
 		margin-bottom: 50px;
 	}

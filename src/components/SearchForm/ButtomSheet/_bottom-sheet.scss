@@ -135,15 +135,15 @@
 	width: 100%;
 	-webkit-tap-highlight-color: transparent;
 
-	@media (hover: hover) {
-		&:hover {
-			background-color: $green;
-		}
-	}
+	// @media (hover: hover) {
+	// 	&:hover {
+	// 		background-color: $green;
+	// 	}
+	// }
 
-	@media (hover: none) {
-		&:active {
-			background-color: $green;
-		}
-	}
+	// @media (hover: none) {
+	// 	&:active {
+	// 		background-color: $green;
+	// 	}
+	// }
 }

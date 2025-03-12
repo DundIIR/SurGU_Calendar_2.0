@@ -18,9 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 		<Provider store={store}>
 			<SessionContextProvider supabaseClient={supabase}>
 				<BrowserRouter>
-					<div className="custom-app">
-						<App />
-					</div>
+					<App />
 				</BrowserRouter>
 			</SessionContextProvider>
 		</Provider>

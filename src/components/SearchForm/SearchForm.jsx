@@ -72,7 +72,7 @@ const SearchForm = () => {
 	const professors = useSelector(state => state.api.professors)
 
 	// Фильтрация групп и преподавателей
-	const filteredGroups = groups.filter(group => group.toLowerCase().includes(fieldSearch.toLowerCase()))
+	const filteredGroups = Object.keys(groups).filter(group => group.toLowerCase().includes(fieldSearch.toLowerCase()))
 	const filteredProfessors = professors.filter(prof => prof.toLowerCase().includes(fieldSearch.toLowerCase()))
 
 	const handleSelectItem = item => {
@@ -105,16 +105,18 @@ const SearchForm = () => {
 		<>
 			<form className="search-form" onSubmit={handleSubmit}>
 				<button type="submit" className="search-form__button"></button>
-				<input
-					type="text"
-					value={fieldSearch}
-					onChange={handleInputChange}
-					required
-					className="search-form__input"
-					placeholder="xxx-хх..."
-					onFocus={() => setShowSuggestions(true)} // Показываем подсказку при фокусе
-					onBlur={() => setTimeout(() => setShowSuggestions(false), 10)}
-				/>
+				<label className="label__input">
+					<input
+						type="text"
+						value={fieldSearch}
+						onChange={handleInputChange}
+						required
+						className="search-form__input"
+						placeholder="xxx-хх..."
+						onFocus={() => setShowSuggestions(true)} // Показываем подсказку при фокусе
+						onBlur={() => setTimeout(() => setShowSuggestions(false), 10)}
+					/>
+				</label>
 				{showSuggestions && fieldSearch && (
 					<div className="search-results-container">
 						<SearchResults items={filteredGroups} />
